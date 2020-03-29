@@ -1,4 +1,4 @@
- Are we flat yet ?
+ Are we flat yet ? [areweflatyet.ca](https://areweflatyet.ca)
 ==================================
 
 This project attempts to convey how Canada is doing at flattening the curve for infections of SARS-COV-2.
@@ -27,5 +27,6 @@ This project consists of a single html template and css file. The template file 
 I went with this approach so I could have the updater execute in a Lambda function then store the report in S3.
 
 ### **To Do:**
+ - [ ] Compute how canada is doing
  - [ ] Show how each province is doing
  - [ ] Add Uplifting News section
