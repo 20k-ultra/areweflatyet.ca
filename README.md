@@ -1,5 +1,6 @@
  Are we flat yet ? [areweflatyet.ca](https://areweflatyet.ca)
 ==================================
+> We are apart but not alone.
 
 This project attempts to convey how Canada is doing at flattening the curve for infections of SARS-COV-2.
 
@@ -30,3 +31,7 @@ I went with this approach so I could have the updater execute in a Lambda functi
  - [ ] Compute how canada is doing
  - [ ] Show how each province is doing
  - [ ] Add Uplifting News section
+
+### ** Special Thanks**
+
+The site's style and layout was taken from [areweasyncyet.rs](https://areweasyncyet.rs/).
