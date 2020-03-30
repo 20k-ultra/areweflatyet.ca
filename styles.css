@@ -66,7 +66,6 @@ strong.extra {
 }
 
 a {
-  color: #3873ad;
   text-decoration: none;
 }
 
@@ -91,23 +90,27 @@ code {
   color: darkred;
 }
 
-.stabilized, .stable {
-  color: rgb(18, 158, 18);
+.progress {
+  color: rgb(30, 120, 220);
+}
+
+.working {
+  color: rgb(30, 160, 180);
+}
+
+.closer {
+  color: rgb(30, 190, 110);
 }
 
 .almost {
-  color: #5338ad;
+  color: rgb(30, 200, 60);
 }
 
-.beta {
-  color: gold;
+.stable {
+  color: rgb(29, 220, 10);
 }
 
-.nightly {
-  color: purple;
-}
-
-.stable, .beta, .nightly, .almost {
+.progress, .working, .closer, .almost, .stable {
   font-weight: bold;
 }
 
