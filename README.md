@@ -32,6 +32,7 @@ I went with this approach so I could have the updater execute in a Lambda functi
  - [ ] Show how each province is doing
  - [ ] Automate Uplifting News section
  - [ ] Add tests
+ - [ ] Add disclaimer next to which provinces are under testing
 
 ### ** Special Thanks**
 
