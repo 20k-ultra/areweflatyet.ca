@@ -30,7 +30,8 @@ I went with this approach so I could have the updater execute in a Lambda functi
 ### **To Do:**
  - [ ] Compute how canada is doing
  - [ ] Show how each province is doing
- - [ ] Add Uplifting News section
+ - [ ] Automate Uplifting News section
+ - [ ] Add tests
 
 ### ** Special Thanks**
 
