@@ -27,6 +27,14 @@ This project consists of a single html template and css file. The template file 
 
 I went with this approach so I could have the updater execute in a Lambda function then store the report in S3.
 
+You can generate a report by running:
+
+```sh
+npm run generate
+```
+
+The generated html is stored inside an index.html file.
+
 ### **To Do:**
  - [ ] Compute how canada is doing
  - [ ] Show how each province is doing
