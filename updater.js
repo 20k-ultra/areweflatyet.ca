@@ -185,7 +185,7 @@ function getTextForValue(value) {
 
 function averageSlope(provinceData) {
   const SPREAD = 10
-  const BUFFER = 2
+  const BUFFER = 1
   const DATA_LENGTH = provinceData.length
   // Check if province has enough data
   let cases = provinceData.reduce((sum, data) => {

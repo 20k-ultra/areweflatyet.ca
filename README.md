@@ -12,24 +12,24 @@ The data used can be found in the [Current Situtation](https://www.canada.ca/en/
 
 ### **How is the result calculated?**
 
-The updater will start at present day and compare total confirmed cases to 2 days back. This 2 days is called the buffer. I did this because I felt doing previous day created very sensitive slopes.
+The updater will start at present day and compare total confirmed cases to the previous day.
 
 For example:
 
 ```sh
 # The data to compare
 30-03-2020 confirmed cases: 1706
-28-03-2020 confirmed cases: 993
+29-03-2020 confirmed cases: 1355
 
 # Plot the data
 x1 = 0
 y1 = log(1706) // 3.231979027
-x2 = 2
+x2 = 1
 y2 = log(993) // 2.996949248
 
 # Deltas
 dy = y2 - y1 // 0.235029779
-dx = x2 - x1 // 2
+dx = x2 - x1 // 1
 
 # Thetas
 t = thetas(dy, dx)
