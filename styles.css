@@ -90,16 +90,20 @@ code {
   color: darkred;
 }
 
+.soon {
+  color: rgb(30, 50, 255);
+}
+
 .progress {
   color: rgb(30, 120, 220);
 }
 
 .working {
-  color: rgb(30, 160, 180);
+  color: rgb(30, 180, 180);
 }
 
 .closer {
-  color: rgb(30, 190, 110);
+  color: rgb(30, 200, 110);
 }
 
 .almost {
@@ -110,7 +114,7 @@ code {
   color: rgb(29, 220, 10);
 }
 
-.progress, .working, .closer, .almost, .flat {
+.soon, .progress, .working, .closer, .almost, .flat {
   font-weight: bold;
 }
 

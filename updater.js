@@ -156,13 +156,15 @@ function normalizeCurve(value) {
 }
 
 function getStyleClass(value) {
-  if (value > 8) {
+  if (value > 15) {
+    return 'soon'
+  } else if (value <= 14.99 && value >= 10) {
     return 'progress'
-  } else if (value <= 7.99 && value >= 5) {
+  } else if (value <= 9.99 && value >= 5.2) {
     return 'working'
-  } else if (value <= 4.99 && value >= 3) {
-    return 'closer'
-  } else if (value <= 2.99 && value >= 0.8) {
+  } else if (value <= 5.19 && value >= 2) {
+    return 'almost'
+  } else if (value <= 1.99 && value >= 0.8) {
     return 'almost'
   } else {
     return 'flat'
@@ -170,13 +172,15 @@ function getStyleClass(value) {
 }
 
 function getTextForValue(value) {
-  if (value > 8) {
+  if (value > 15) {
+    return 'Keep going!'
+  } else if (value <= 14.99 && value >= 10) {
     return 'Making progress!'
-  } else if (value <= 7.99 && value >= 5) {
-    return 'It\'s working!'
-  } else if (value <= 4.99 && value >= 3) {
+  } else if (value <= 9.99 && value >= 5.2) {
+    return 'It\'s working'
+  } else if (value <= 5.19 && value >= 2) {
     return 'Getting closer!'
-  } else if (value <= 2.99 && value >= 0.8) {
+  } else if (value <= 1.99 && value >= 0.8) {
     return 'Almost there!'
   } else {
     return 'YES!'
