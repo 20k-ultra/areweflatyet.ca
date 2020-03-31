@@ -35,10 +35,10 @@ dx = x2 - x1 // 1
 t = thetas(dy, dx)
 
 # Convert to degrees
-slope = t * 180 / Pi
+angle = t * 180 / Pi
 ```
 
-These slopes are calculated for 10 days, each time moving the start one day older. These slopes were then averaged. I did this because taking a single slope was really sensitive to just 1 slope so averaging over a 10 day spread provided a more consistent slope.
+These angles are calculated for 10 days, each time moving the start one day older. These angles were then averaged. I did this because taking a single angle was really sensitive to just 1 angle so averaging over a 10 day spread provided a more consistent angle.
 
 ### **How does it work ?**
 

@@ -117,20 +117,20 @@ function persistFile(data, fileName, cb) {
 
 function processData(data) {
   const PROVINCE_DATA = parseCSV(data).sortByProvinceId()
-  const PROVINCE_SLOPES = Object.keys(PROVINCE_DATA)
+  const PROVINCE_ANGLES = Object.keys(PROVINCE_DATA)
     .reduce((acc, province) => {
-      acc[province] = averageSlope(PROVINCE_DATA[province])
+      acc[province] = averageAngle(PROVINCE_DATA[province])
       return acc
     }, {})
 
   // Update template HTML
   getTemplate(template => {
     // Update template values
-    Object.keys(PROVINCE_SLOPES).forEach(key => {
+    Object.keys(PROVINCE_ANGLES).forEach(key => {
       const NAME_PATTERN = new RegExp('{{' + key + '-name}}', 'gm')
       const CLASS_PATTERN = new RegExp('{{' + key + '-class}}', 'gm')
       const CURVE_PATTERN = new RegExp('{{' + key + '-curve}}', 'gm')
-      const CURVE = normalizeCurve(PROVINCE_SLOPES[key])
+      const CURVE = normalizeCurve(PROVINCE_ANGLES[key])
       template = template.replace(NAME_PATTERN, PROVINCE_NAME[key])
       template = template.replace(CLASS_PATTERN, getStyleClass(CURVE))
       template = template.replace(CURVE_PATTERN, CURVE)
@@ -183,7 +183,7 @@ function getTextForValue(value) {
   }
 }
 
-function averageSlope(provinceData) {
+function averageAngle(provinceData) {
   const SPREAD = 10
   const BUFFER = 1
   const DATA_LENGTH = provinceData.length
