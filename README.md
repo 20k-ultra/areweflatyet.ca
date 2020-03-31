@@ -12,14 +12,33 @@ The data used can be found in the [Current Situtation](https://www.canada.ca/en/
 
 ### **How is the result calculated?**
 
-It uses a logarithmic function to compare previous data and given the range a result is outputted. The possible results are:
- - not yet
- - getting there
- - it's working
- - almost there
- - yes!
+The updater will start at present day and compare total confirmed cases to 2 days back. This 2 days is called the buffer. I did this because I felt doing previous day created very sensitive slopes.
 
-Once I actually implement this I'll expand on it more...
+For example:
+
+```sh
+# The data to compare
+30-03-2020 confirmed cases: 1706
+28-03-2020 confirmed cases: 993
+
+# Plot the data
+x1 = 0
+y1 = log(1706) // 3.231979027
+x2 = 2
+y2 = log(993) // 2.996949248
+
+# Deltas
+dy = y2 - y1 // 0.235029779
+dx = x2 - x1 // 2
+
+# Thetas
+t = thetas(dy, dx)
+
+# Convert to degrees
+slope = t * 180 / Pi
+```
+
+These slopes are calculated for 10 days, each time moving the start one day older. These slopes were then averaged. I did this because taking a single slope was really sensitive to just 1 slope so averaging over a 10 day spread provided a more consistent slope.
 
 ### **How does it work ?**
 
@@ -36,12 +55,12 @@ npm run generate
 The generated html is stored inside an index.html file.
 
 ### **To Do:**
- - [ ] Compute how canada is doing
- - [ ] Show how each province is doing
+ - [x] Compute how canada is doing
+ - [x] Show how each province is doing
  - [ ] Automate Uplifting News section
  - [ ] Add tests
  - [ ] Add disclaimer next to which provinces are under testing
 
-### ** Special Thanks**
+### **Special Thanks**
 
 The site's style and layout was taken from [areweasyncyet.rs](https://areweasyncyet.rs/).
