@@ -175,7 +175,7 @@ function getTextForValue(value) {
   } else if (value <= 7.99 && value >= 5) {
     return 'It\'s working!'
   } else if (value <= 4.99 && value >= 3) {
-    return 'Gettig closer!'
+    return 'Getting closer!'
   } else if (value <= 2.99 && value >= 0.8) {
     return 'Almost there!'
   } else {
