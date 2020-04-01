@@ -214,6 +214,8 @@ function parseCSV(data) {
   let rows = data.split('\n')
   const VALUES = rows.shift().split(',')
   return rows.map(row => {
+    // Remove numbers with commas
+    row = removeEscapedCommas(row)
     const COLUMNS = row.split(',')
     return VALUES.reduce((acc, value, index) => {
       if (COLUMN_MAPPING[value]) {
@@ -222,6 +224,21 @@ function parseCSV(data) {
       return acc
     }, {})
   })
+}
+
+function removeEscapedCommas (csvLine) {
+  if (csvLine.split('"').length < 2) return csvLine
+  let firstQuotes = csvLine.indexOf('"')
+  if (firstQuotes !== -1) {
+    let nextQuotes = csvLine.substring(firstQuotes + 1).indexOf('"')
+    let target = csvLine.substring(firstQuotes + 1, firstQuotes + nextQuotes + 1)
+    csvLine = csvLine.replace(`"${target}"`, target.replace(/,/g, ''))
+    // Check for more quotes
+    if (csvLine.split('"').length >= 2) {
+      csvLine = removeEscapedCommas(csvLine)
+    }
+  }
+  return csvLine
 }
 
 function angle(cx, cy, ex, ey) {
