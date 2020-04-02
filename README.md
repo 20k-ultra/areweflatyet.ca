@@ -57,6 +57,7 @@ The generated html is stored inside an index.html file.
 ### **To Do:**
  - [x] Compute how canada is doing
  - [x] Show how each province is doing
+ - [ ] Show progress changes next to values
  - [ ] Automate Uplifting News section
  - [ ] Add tests
  - [ ] Add disclaimer next to which provinces are under testing
