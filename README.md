@@ -18,17 +18,17 @@ For example:
 
 ```sh
 # The data to compare
-30-03-2020 confirmed cases: 1706
 29-03-2020 confirmed cases: 1355
+30-03-2020 confirmed cases: 1706
 
 # Plot the data
 x1 = 0
-y1 = log(1706) // 3.231979027
+y1 = log(1355) // 3.131939295
 x2 = 1
-y2 = log(993) // 2.996949248
+y2 = log(1706) // 3.231979027
 
 # Deltas
-dy = y2 - y1 // 0.235029779
+dy = y2 - y1 // 0.100039732
 dx = x2 - x1 // 1
 
 # Thetas
