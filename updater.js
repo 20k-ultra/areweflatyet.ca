@@ -15,8 +15,8 @@ const COLUMN_MAPPING = {
   'numtoday': 'new'
 }
 
-const PROVINCE_NAME = {
-  '1': 'Canada',
+const AREAS = {
+  '1' : 'Canada',
   '10': 'Newfoundland and Labrador',
   '11': 'Prince Edward Island',
   '12': 'Nova Scotia',
@@ -116,31 +116,14 @@ function persistFile(data, fileName, cb) {
 }
 
 function processData(data) {
-  const PROVINCE_DATA = parseCSV(data).sortByProvinceId()
-  const PROVINCE_ANGLES = Object.keys(PROVINCE_DATA)
-    .reduce((acc, province) => {
-      acc[province] = averageAngle(PROVINCE_DATA[province])
-      return acc
-    }, {})
-
+  const SORTED_DATA = parseCSV(data).sortById()
   // Update template HTML
   getTemplate(template => {
-    // Update template values
-    Object.keys(PROVINCE_ANGLES).forEach(key => {
-      const NAME_PATTERN = new RegExp('{{' + key + '-name}}', 'gm')
-      const CLASS_PATTERN = new RegExp('{{' + key + '-class}}', 'gm')
-      const CURVE_PATTERN = new RegExp('{{' + key + '-curve}}', 'gm')
-      const CURVE = normalizeCurve(PROVINCE_ANGLES[key])
-      template = template.replace(NAME_PATTERN, PROVINCE_NAME[key])
-      template = template.replace(CLASS_PATTERN, getStyleClass(CURVE))
-      template = template.replace(CURVE_PATTERN, CURVE)
-      if (key === '1') {
-        // Update main text
-        const MAIN_TEXT = new RegExp('{{main-text}}', 'gm')
-        template = template.replace(MAIN_TEXT, getTextForValue(CURVE))
-      }
-    })
-    // Update generated timestamp
+    // Set Canada's values
+    template = setNationalData(template, SORTED_DATA)
+    // Set province values
+    template = setProvinceData(template, SORTED_DATA)
+    // Set generated timestamp
     const GENERATED_TIMESTAMP = new RegExp('{{generated-timestamp}}', 'gm')
     template = template.replace(GENERATED_TIMESTAMP, new Date())
     // Save updated templated
@@ -148,6 +131,26 @@ function processData(data) {
       console.log('Done!')
     })
   })
+}
+
+function setNationalData(template, data) {
+  const AVERAGE_CURVE = averageCurve(data['1'])
+  const CURVE = normalizeCurve(AVERAGE_CURVE)
+  const MAIN_TEXT = new RegExp('{{main-text}}', 'gm')
+  template = template.replace(MAIN_TEXT, getTextForValue(CURVE))
+  return setCurve(template, '1', CURVE)
+}
+
+function setProvinceData(template, data) {
+  return Object.keys(data)
+    .filter(key => {
+      return Object.keys(AREAS).includes(key)
+    })
+    .reduce((modifiedTemplate, provinceKey) => {
+      const AVERAGE_CURVE = averageCurve(data[provinceKey])
+      const CURVE = normalizeCurve(AVERAGE_CURVE)
+      return setCurve(modifiedTemplate, provinceKey, CURVE)
+    }, template)
 }
 
 function normalizeCurve(value) {
@@ -187,18 +190,19 @@ function getTextForValue(value) {
   }
 }
 
-function averageAngle(provinceData) {
+function averageCurve(areaData) {
   const SPREAD = 10
   const BUFFER = 1
-  const DATA_LENGTH = provinceData.length
-  // Check if province has enough data
-  if (provinceData[provinceData.length - 1].total < 100 || DATA_LENGTH < SPREAD) {
+  const DATA_LENGTH = areaData.length
+  // Check if area has enough data
+  if (areaData[areaData.length - 1].total < 100 || DATA_LENGTH < SPREAD) {
     return NaN
   }
-  return (new Array(SPREAD)).fill(undefined)
+  return (new Array(SPREAD))
+    .fill(undefined)
     .reduce((acc, _, index) => {
-      const FROM = provinceData[DATA_LENGTH - (BUFFER + index)]
-      const NOW = provinceData[DATA_LENGTH - index]
+      const FROM = areaData[DATA_LENGTH - (BUFFER + index)]
+      const NOW = areaData[DATA_LENGTH - index]
       if (FROM && NOW) {
         return acc + angle(0, Math.log(FROM.total), BUFFER, Math.log(NOW.total))
       } else {
@@ -209,21 +213,20 @@ function averageAngle(provinceData) {
 
 function parseCSV(data) {
   let rows = data.split('\n')
-  const VALUES = rows.shift().split(',')
-  return rows.map(row => {
-    // Remove numbers with commas
-    row = removeEscapedCommas(row)
-    const COLUMNS = row.split(',')
-    return VALUES.reduce((acc, value, index) => {
-      if (COLUMN_MAPPING[value]) {
-        acc[COLUMN_MAPPING[value]] = COLUMNS[index]
-      }
-      return acc
-    }, {})
-  })
+  const HEADINGS = rows.shift().split(',')
+  return rows
+    .map(row => {
+      const COLUMNS = removeEscapedCommas(row).split(',')
+      return HEADINGS.reduce((acc, value, index) => {
+        if (COLUMN_MAPPING[value]) {
+          acc[COLUMN_MAPPING[value]] = COLUMNS[index]
+        }
+        return acc
+      }, {})
+    })
 }
 
-function removeEscapedCommas (csvLine) {
+function removeEscapedCommas(csvLine) {
   if (csvLine.split('"').length < 2) return csvLine
   let firstQuotes = csvLine.indexOf('"')
   if (firstQuotes !== -1) {
@@ -246,12 +249,42 @@ function angle(cx, cy, ex, ey) {
   return theta
 }
 
-Array.prototype.sortByProvinceId = function () {
+function setCurve(template, areaId, curve) {
+  const PATTERNS = [`{{${areaId}-name}}`, `{{${areaId}-class}}`, `{{${areaId}-curve}}`]
+  return PATTERNS.reduce((modifiedTemplate, pattern, index) => {
+    switch (index) {
+      case 0:
+        return replaceValue(modifiedTemplate, pattern, AREAS[areaId])
+        break
+      case 1:
+        return replaceValue(modifiedTemplate, pattern, getStyleClass(curve))
+        break
+      case 2:
+        return replaceValue(modifiedTemplate, pattern, curve)
+        break
+      default:
+        return modifiedTemplate
+    }
+  }, template)
+}
+
+function replaceValue(text, pattern, value) {
+  const REGEX = new RegExp(pattern, 'gm')
+  return text.replace(REGEX, value)
+}
+
+String.prototype.updateValue = function (regex, value) {
+  return this.replace(regex, value)
+}
+
+Array.prototype.sortById = function () {
   return this.reduce((sorted, value) => {
     if (Array.isArray(sorted[value.id])) {
       sorted[value.id].push(value)
     } else {
-      sorted[value.id] = [value]
+      if (value.id.length > 0) {
+        sorted[value.id] = [value]
+      }
     }
     return sorted
   }, {})
