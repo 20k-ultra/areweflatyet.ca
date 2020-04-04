@@ -192,10 +192,7 @@ function averageAngle(provinceData) {
   const BUFFER = 1
   const DATA_LENGTH = provinceData.length
   // Check if province has enough data
-  let cases = provinceData.reduce((sum, data) => {
-    return sum + parseInt(data.total)
-  }, 0)
-  if (cases < 200 || DATA_LENGTH < SPREAD) {
+  if (provinceData[provinceData.length - 1].total < 100 || DATA_LENGTH < SPREAD) {
     return NaN
   }
   return (new Array(SPREAD)).fill(undefined)
