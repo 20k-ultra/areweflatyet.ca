@@ -90,6 +90,10 @@ code {
   color: darkred;
 }
 
+.diff {
+  color: rgb(183, 13, 244);
+}
+
 .soon {
   color: rgb(30, 50, 255);
 }
@@ -114,16 +118,16 @@ code {
   color: rgb(29, 220, 10);
 }
 
-.soon, .progress, .working, .closer, .almost, .flat {
+.soon, .progress, .working, .closer, .almost, .flat, .diff {
   font-weight: bold;
 }
 
-.issues {
+.differences {
   font-size: 16px;
   margin-bottom: .5em;
 }
 
-.issues > summary {
+.differences > summary {
   cursor: pointer;
 }
 

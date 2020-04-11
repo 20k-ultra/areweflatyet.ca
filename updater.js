@@ -32,6 +32,9 @@ const AREAS = {
   '62': 'Nunavut',
 }
 
+const IMPROVEMENT_TEXT = `<br>That's a <span class="flat">-{{yesterday-diff}}</span> improvement from yesterday and <span class="flat">-{{week-diff}}</span>
+improvement from a week ago!`
+
 // Run the show
 getData(processData)
 
@@ -134,11 +137,20 @@ function processData(data) {
 }
 
 function setNationalData(template, data) {
-  const AVERAGE_CURVE = averageCurve(data['1'])
+  const NATIONAL_KEY = '1'
+  const AVERAGE_CURVE = averageCurve(data[NATIONAL_KEY])
   const CURVE = normalizeCurve(AVERAGE_CURVE)
   const MAIN_TEXT = new RegExp('{{main-text}}', 'gm')
+  // Set main text
   template = template.replace(MAIN_TEXT, getTextForValue(CURVE))
-  return setCurve(template, '1', CURVE)
+  // Set todays curve
+  template = setCurve(template, NATIONAL_KEY, CURVE)
+  // Set yesterday difference
+  const DAY_DIFF = normalizeCurve(CURVE - averageCurve(data[NATIONAL_KEY].slice(0, (data[NATIONAL_KEY].length - 1))))
+  template = template.replace(`{{${NATIONAL_KEY}-yesterday-diff}}`, DAY_DIFF)
+  // Set week difference
+  const WEEK_DIFF = normalizeCurve(CURVE - averageCurve(data[NATIONAL_KEY].slice(0, (data[NATIONAL_KEY].length - 7))))
+  return template.replace(`{{${NATIONAL_KEY}-week-diff}}`, WEEK_DIFF)
 }
 
 function setProvinceData(template, data) {
@@ -149,7 +161,14 @@ function setProvinceData(template, data) {
     .reduce((modifiedTemplate, provinceKey) => {
       const AVERAGE_CURVE = averageCurve(data[provinceKey])
       const CURVE = normalizeCurve(AVERAGE_CURVE)
-      return setCurve(modifiedTemplate, provinceKey, CURVE)
+      // Set todays curve
+      modifiedTemplate = setCurve(modifiedTemplate, provinceKey, CURVE)
+      // Set yesterday difference
+      const DAY_DIFF = normalizeCurve(CURVE - averageCurve(data[provinceKey].slice(0, (data[provinceKey].length - 1))))
+      modifiedTemplate = modifiedTemplate.replace(`{{${provinceKey}-yesterday-diff}}`, DAY_DIFF)
+      // Set week difference
+      const WEEK_DIFF = normalizeCurve(CURVE - averageCurve(data[provinceKey].slice(0, (data[provinceKey].length - 7))))
+      return modifiedTemplate.replace(`{{${provinceKey}-week-diff}}`, WEEK_DIFF)
     }, template)
 }
 
