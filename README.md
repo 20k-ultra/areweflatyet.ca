@@ -1,4 +1,4 @@
-Note: No longer maintained. Project has achieved it's goal for the first wave.
+**Note: No longer maintained. Project has achieved its goal for me. The site is still available though.**
 
  Are we flat yet ? [areweflatyet.ca](https://areweflatyet.ca)
 ==================================
