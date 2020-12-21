@@ -1,3 +1,5 @@
+Note: No longer maintained. Project has achieved it's goal for the first wave.
+
  Are we flat yet ? [areweflatyet.ca](https://areweflatyet.ca)
 ==================================
 > We are apart but not alone.
